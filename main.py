@@ -31,30 +31,21 @@ while start:
         email = email.upper()
         password = input("Enter your password (Letters and Numbers): \n")
         password= password.upper()
+        firstName = input("Enter your First Name): \n")
+        firstName = firstName.upper()
+        lastName = input("Enter your Last Name): \n")
+        lastName = lastName.upper()
+        phone = input("Enter your Phone Number): \n")
+        phone = phone.upper()
 
-        #Read file .csv with encription data
-        with open('./chyper-code.csv') as file:
-            my_file = csv.reader(file)
 
-        #Definition list file .cvs
-            for row in my_file:
-                key = row[0] # store row of the file
-                x = key.split(";") # used to separate the string  A;T   [A]
-                codes1.append(x[0])
-                codes2.append(x[1])
-
-        # Password details
-        for i in range(len(password)):
-            for j in range(len(codes1)):
-                if password[i] == codes1[j]:
-                    newpassword = newpassword + codes2[j]
 
         #Create connection with DB, and insert in to the table
 
         connection = sqlite3.connect("Travel_Agency.db")
         # --------------------------------------------------------------------------------
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO Travel_Agency (LOGIN, CRYPTOGRAPHIC_PASSWORD) values ('"+email+"','"+newpassword+"');")
+        cursor.execute("INSERT INTO User (UserName, Password, FirstName, LastName, Phone ) values ('"+email+"','"+password+"','"+firstName+"','"+lastName+"','"+phone+"');")
         cursor.execute("COMMIT;")
         cursor.close()
         # --------------------------------------------------------------------------------
@@ -71,21 +62,6 @@ while start:
             email = email.upper()
             password = input("Enter your password: \n")
             password = password.upper()
-
-            with open('./chyper-code.csv') as file:
-                my_file = csv.reader(file)
-
-                for row in my_file:
-                    key = row[0]  # store row of the file
-                    x = key.split(";")  # used to separate the string
-                    codes1.append(x[0])
-                    codes2.append(x[1])
-
-            # Password encription
-            for i in range(len(password)):
-                for j in range(len(codes1)):
-                    if password[i] == codes1[j]:
-                        newpassword = newpassword + codes2[j]
 
             connection = sqlite3.connect("Travel_Agency.db")
             # --------------------------------------------------------------------------------
@@ -148,23 +124,6 @@ while start:
             email = email.upper()
             password = input("Enter your password: \n")
             password = password.upper()
-
-            with open('./chyper-code.csv') as file:
-                my_file = csv.reader(file)
-
-                for row in my_file:
-                    key = row[0]  # store row of the file
-                    x = key.split(";")  # used to separate the string
-                    codes1.append(x[0])
-                    codes2.append(x[1])
-
-            # Password encription
-            for i in range(len(password)):
-                for j in range(len(codes1)):
-                    if password[i] == codes1[j]:
-                        newpassword = newpassword + codes2[j]
-
-
     elif option == 4:
             count = ''
             print("\n**********************************************")
@@ -175,22 +134,6 @@ while start:
             email = email.upper()
             password = input("Enter your password: \n")
             password = password.upper()
-
-            with open('./chyper-code.csv') as file:
-                my_file = csv.reader(file)
-
-                for row in my_file:
-                    key = row[0]  # store row of the file
-                    x = key.split(";")  # used to separate the string
-                    codes1.append(x[0])
-                    codes2.append(x[1])
-
-            # Password encription
-            for i in range(len(password)):
-                for j in range(len(codes1)):
-                    if password[i] == codes1[j]:
-                        newpassword = newpassword + codes2[j]
-
 
 
     elif option == 5:
