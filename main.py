@@ -17,40 +17,98 @@ while start:
 
     codes1 = []
     codes2 = []
+
+
+    # Create connection with DB, and insert in to the table
+
+    connection = sqlite3.connect("Travel_Agency.db")
     newpassword = ''
     option = input("Select the Option:")
     option = int (option)
     if option == 1:
         account=0
+        resultsUserCreated = None
 
-        print("\n**********************************************")
-        print("*************CREATE USER************************")
-        print("************************************************")
+        print("\n***************TYPE OF USER**************\n (1) Admin User \n", "(2) Normal User\n")
 
-        email = input("Enter your email: \n")
-        email = email.upper()
-        password = input("Enter your password (Letters and Numbers): \n")
-        password= password.upper()
-        firstName = input("Enter your First Name): \n")
-        firstName = firstName.upper()
-        lastName = input("Enter your Last Name): \n")
-        lastName = lastName.upper()
-        phone = input("Enter your Phone Number): \n")
-        phone = phone.upper()
+        optionUser = input("Select the Option:")
+        optionUser = int(optionUser)
 
+        if optionUser==1:
+            print("\n**********************************************")
+            print("*************CREATE ADMIN USER******************")
+            print("************************************************")
 
+            email = input("Enter your email: \n")
+            email = email.upper()
+            password = input("Enter your password (Letters and Numbers): \n")
+            password = password.upper()
+            firstName = input("Enter your First Name): \n")
+            firstName = firstName.upper()
+            lastName = input("Enter your Last Name): \n")
+            lastName = lastName.upper()
+            phone = input("Enter your Phone Number): \n")
+            phone = phone.upper()
 
-        #Create connection with DB, and insert in to the table
+            # Qry User and Nro times to access
+            # ---------------------------------------------------------------------------------------------
+            cursor = connection.cursor()
+            cursor.execute(
+            "SELECT UserName FROM User WHERE UserType =  '0'")
+            resultsUserCreated = cursor.fetchone()
+            cursor.close()
 
-        connection = sqlite3.connect("Travel_Agency.db")
-        # --------------------------------------------------------------------------------
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO User (UserName, Password, FirstName, LastName, Phone ) values ('"+email+"','"+password+"','"+firstName+"','"+lastName+"','"+phone+"');")
-        cursor.execute("COMMIT;")
-        cursor.close()
-        # --------------------------------------------------------------------------------
-        connection.close()
-        print("\nThe user was successfully created\n")
+            if resultsUserCreated == None:
+                # Create connection with DB, and insert in to the table
+
+                connection = sqlite3.connect("Travel_Agency.db")
+                # --------------------------------------------------------------------------------
+                cursor = connection.cursor()
+                cursor.execute(
+                    "INSERT INTO User (UserName, Password, FirstName, LastName, Phone, UserType ) values ('" + email + "','" + password + "','" + firstName + "','" + lastName + "','" + phone + "','0');")
+                cursor.execute("COMMIT;")
+                cursor.close()
+                # --------------------------------------------------------------------------------
+                connection.close()
+                print("\nThe user was successfully created\n")
+            else:
+                print("\nThe Admin user already exists\n")
+
+        if optionUser == 2:
+            print("\n**********************************************")
+            print("*************CREATE NORMAL USER************************")
+            print("************************************************")
+
+            email = input("Enter your email: \n")
+            email = email.upper()
+            password = input("Enter your password (Letters and Numbers): \n")
+            password= password.upper()
+            firstName = input("Enter your First Name): \n")
+            firstName = firstName.upper()
+            lastName = input("Enter your Last Name): \n")
+            lastName = lastName.upper()
+            phone = input("Enter your Phone Number): \n")
+            phone = phone.upper()
+
+            # Qry User and Nro times to access
+            # ---------------------------------------------------------------------------------------------
+            cursor = connection.cursor()
+            cursor.execute(
+                "SELECT UserName FROM User WHERE UserName = '" + email + "' and  (UserType =  '0' or UserType = '1')")
+            resultsUserCreated = cursor.fetchone()
+            cursor.close()
+
+            if resultsUserCreated == None:
+                # --------------------------------------------------------------------------------
+                cursor = connection.cursor()
+                cursor.execute("INSERT INTO User (UserName, Password, FirstName, LastName, Phone ) values ('"+email+"','"+password+"','"+firstName+"','"+lastName+"','"+phone+"');")
+                cursor.execute("COMMIT;")
+                cursor.close()
+                # --------------------------------------------------------------------------------
+                connection.close()
+                print("\nThe user was successfully created\n")
+            else:
+                print("\nThe user already exists\n")
 
     elif option == 2:
             count = ''
