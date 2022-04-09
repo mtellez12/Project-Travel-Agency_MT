@@ -36,7 +36,7 @@ while start:
 
         if optionUser==1:
             print("\n**********************************************")
-            print("*************CREATE ADMIN USER******************")
+            print("*************1. CREATE ADMIN USER****************")
             print("************************************************")
 
             email = input("Enter your email: \n")
@@ -76,7 +76,7 @@ while start:
 
         if optionUser == 2:
             print("\n**********************************************")
-            print("*************CREATE NORMAL USER************************")
+            print("*************2. CREATE NORMAL USER***************")
             print("************************************************")
 
             email = input("Enter your email: \n")
@@ -112,6 +112,7 @@ while start:
 
     elif option == 2:
             count = ''
+            managePlaces = True
             print("\n**********************************************")
             print("*************MANAGE PLACES**********************")
             print("************************************************")
@@ -124,14 +125,80 @@ while start:
             connection = sqlite3.connect("Travel_Agency.db")
             # --------------------------------------------------------------------------------
             cursor = connection.cursor()
-            cursor.execute("SELECT ACCESS_COUNT FROM TRAVEL_AGENCY WHERE LOGIN = '"+email+"' AND CRYPTOGRAPHIC_PASSWORD = '"+newpassword+"'")
-            count = cursor.fetchone()
+            cursor.execute(
+                "SELECT UserName FROM User WHERE UserName = '" + email + "' and  UserType =  '0'")
+            resultsValidatedAdmin = cursor.fetchone()
+            cursor.close()
+
+            if resultsValidatedAdmin != None:
+                while(managePlaces):
+                    print("\n***************ADMIN OPTION**************\n (1) Create Places \n", "(2) View Places\n","(3) Update Places\n","(4) Delete Places\n")
+                    optionPlaces = input("Select the Option:")
+                    optionPlaces = int(optionPlaces)
+
+                    if optionPlaces == 1:
+                        print("\n**********************************************")
+                        print("*************1. CREATE PLACES****************")
+                        print("************************************************")
+
+                        descriptionPlace = input("Enter Description Place: \n")
+                        descriptionPlace = descriptionPlace.upper()
+                        country = input("Enter Country): \n")
+                        country= country.upper()
+                        price = input("Enter Price): \n")
+                        price = price.upper()
+                        address = input("Enter Address): \n")
+                        address = address.upper()
+                        nameContact = input("Enter Name Contact): \n")
+                        nameContact = nameContact.upper()
+                        phoneContactPlace = input("Enter Phone Contact): \n")
+                        phoneContactPlace = phoneContactPlace.upper()
+                        availabilityStart = input("Enter Availability Start with format):dd/mm/yyyy \n") #CONFIRME VALIDATION
+                        availabilityStart = availabilityStart.upper()
+                        availabilityEnd = input("Enter Availability End with format):dd/mm/yyyy \n")  # CONFIRME VALIDATION
+                        availabilityEnd = availabilityEnd.upper()
+
+                        # --------------------------------------------------------------------------------
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "INSERT INTO Place (Description, Country, Price, Address, NameContact,PhoneContact,AvailabilityStart,AvailabilityEnd ) "
+                            "values ('" + descriptionPlace + "','" + country + "','" + price + "','" +
+                            address + "','" + nameContact + "','" + phoneContactPlace + "','" + availabilityStart + "','" + availabilityEnd + "');")
+                        cursor.execute("COMMIT;")
+                        cursor.close()
+                        # --------------------------------------------------------------------------------
+                    print("\nThe place was successfully created\n")
+
+                    if optionPlaces == 2:
+                        print("\n**********************************************")
+                        print("*************2. VIEW PLACES****************")
+                        print("************************************************")
+                        account = 0
+
+                    if optionPlaces == 3:
+                        print("\n**********************************************")
+                        print("*************3. UPDATE PLACES****************")
+                        print("************************************************")
+                        account = 0
+
+                    if optionPlaces == 4:
+                        print("\n**********************************************")
+                        print("*************4. DELETE PLACES****************")
+                        print("************************************************")
+                        account = 0
+
+                    elif optionPlaces == 5:
+                        managePlaces = False
+
+            #cursor = connection.cursor()
+            #cursor.execute("SELECT ACCESS_COUNT FROM TRAVEL_AGENCY WHERE LOGIN = '"+email+"' AND CRYPTOGRAPHIC_PASSWORD = '"+newpassword+"'")
+            #count = cursor.fetchone()
             #access = type(int(count[0]))+ 1
-            if(count != None):
-                for i in range(len(count)):
-                    access = count[i]
-                    access = access + 1
-                cursor.close()
+           # if(count != None):
+                #for i in range(len(count)):
+                    #access = count[i]
+                    #access = access + 1
+               # cursor.close()
                 # --------------------------------------------------------------------------------
 
             # update times to access in database
