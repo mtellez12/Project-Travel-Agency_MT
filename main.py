@@ -5,6 +5,7 @@
 
 import csv
 import sqlite3
+import datetime
 
 
 start=True
@@ -153,9 +154,9 @@ while start:
                         nameContact = nameContact.upper()
                         phoneContactPlace = input("Enter Phone Contact): \n")
                         phoneContactPlace = phoneContactPlace.upper()
-                        availabilityStart = input("Enter Availability Start with format):dd/mm/yyyy \n") #CONFIRME VALIDATION
+                        availabilityStart = input("Enter Availability Start with format):YYYY-MM-DD \n") #CONFIRME VALIDATION
                         availabilityStart = availabilityStart.upper()
-                        availabilityEnd = input("Enter Availability End with format):dd/mm/yyyy \n")  # CONFIRME VALIDATION
+                        availabilityEnd = input("Enter Availability End with format):YYYY-MM-DD \n")  # CONFIRME VALIDATION
                         availabilityEnd = availabilityEnd.upper()
 
                         # --------------------------------------------------------------------------------
@@ -170,10 +171,81 @@ while start:
                     print("\nThe place was successfully created\n")
 
                     if optionPlaces == 2:
+
+
                         print("\n**********************************************")
                         print("*************2. VIEW PLACES****************")
                         print("************************************************")
-                        account = 0
+                        # --------------------------------------------------------------------------------
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT PlaceID FROM Place")
+                        resultsPlaceId = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT Description FROM Place")
+                        resultsDescription = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT Country FROM Place")
+                        resultsCountry = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT Price FROM Place")
+                        resultsPrice = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT Address FROM Place")
+                        resultsAddress = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT NameContact FROM Place")
+                        resultsNameContact = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT PhoneContact FROM Place")
+                        resultsPhoneContact = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT AvailabilityStart FROM Place")
+                        resultsAvailabilityStart = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = connection.cursor()
+                        cursor.execute(
+                            "SELECT AvailabilityEnd FROM Place")
+                        resultsAvailabilityEnd = cursor.fetchall()
+                        cursor.close()
+
+
+                        for i in range(len(resultsPlaceId)):
+                            print("\nPlaces: Place ID:" + str(resultsPlaceId[i]) + "\n")
+                            print("Description:" + str(resultsDescription[i]) + "\n")
+                            print("Country:" + str(resultsCountry[i]) + "\n")
+                            print("Price:" + str(resultsPrice[i]) + "\n")
+                            print("Address:" + str(resultsAddress[i]) + "\n")
+                            print("NameContact:" + str(resultsNameContact[i]) + "\n")
+                            print("PhoneContact:" + str(resultsPhoneContact[i]) + "\n")
+                            print("AvailabilityStart:" + str(resultsAvailabilityStart[i]) + "\n")
+                            print("AvailabilityEnd:" + str(resultsAvailabilityEnd[i]) + "\n")
+
+
+                            # --------------------------------------------------------------------------------
+
 
                     if optionPlaces == 3:
                         print("\n**********************************************")
@@ -181,11 +253,44 @@ while start:
                         print("************************************************")
                         account = 0
 
+                        print("\n**********************************************")
+                        PlaceID = input("Enter Place ID to Update: \n")
+                        PlaceID = int(PlaceID)
+
+                        print("\n**********************************************")
+
+                        price = input("Enter Price): \n")
+                        price = price.upper()
+                        availabilityStart = input("Enter Availability Start with format:YYYY-MM-DD \n")  # CONFIRME VALIDATION
+                        availabilityStart = availabilityStart.upper()
+                        availabilityEnd = input("Enter Availability End with format:YYYY-MM-DD \n")  # CONFIRME VALIDATION
+                        availabilityEnd = availabilityEnd.upper()
+                        # update times to access in database
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE Place SET  Price = '" + price +  "',AvailabilityStart = '" + availabilityStart + "',AvailabilityEnd = '" + availabilityEnd + "' WHERE PlaceId = " + str(PlaceID) + ";")
+                        cursor.execute("COMMIT;")
+                        cursor.close()
+
+                        print("\nThe place was successfully updated\n")
+
+
                     if optionPlaces == 4:
                         print("\n**********************************************")
                         print("*************4. DELETE PLACES****************")
                         print("************************************************")
                         account = 0
+
+                        print("\n**********************************************")
+                        PlaceID = input("Enter Place ID to Delete: \n")
+                        PlaceID = int(PlaceID)
+
+                        print("\n**********************************************")
+
+                        cursor = connection.cursor()
+                        cursor.execute("DELETE FROM Place WHERE PlaceId = " + str(PlaceID) + ";")
+                        cursor.execute("COMMIT;")
+                        cursor.close()
+                        print("\nThe place was successfully deleted\n")
 
                     elif optionPlaces == 5:
                         managePlaces = False
@@ -244,11 +349,107 @@ while start:
             print("\n**********************************************")
             print("*******************BOOKING**********************")
             print("************************************************")
-
             email = input("Enter your email: \n")
             email = email.upper()
             password = input("Enter your password: \n")
             password = password.upper()
+
+            connection = sqlite3.connect("Travel_Agency.db")
+            # --------------------------------------------------------------------------------
+            cursor = connection.cursor()
+            cursor.execute(
+                "SELECT UserID FROM User WHERE UserName = '" + email + "' and  UserType =  '1'")
+            resultsValidatedUser = cursor.fetchone()
+            cursor.close()
+
+            if resultsValidatedUser != None:
+
+                DateStart = input("Enter Date Start with format: YYYY-MM-DD \n")
+                DateStart = DateStart.upper()
+                DateFinish = input("Enter Date Finish with format:YYYY-MM-DD \n")
+                DateFinish = DateFinish.upper()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT PlaceID FROM Place")
+                resultsPlaceId = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT Description FROM Place")
+                resultsDescription = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT Country FROM Place")
+                resultsCountry = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT Price FROM Place")
+                resultsPrice = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT Address FROM Place")
+                resultsAddress = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT NameContact FROM Place")
+                resultsNameContact = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT PhoneContact FROM Place")
+                resultsPhoneContact = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT AvailabilityStart FROM Place")
+                resultsAvailabilityStart = cursor.fetchall()
+                cursor.close()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT AvailabilityEnd FROM Place")
+                resultsAvailabilityEnd = cursor.fetchall()
+                cursor.close()
+
+                characters = "(',)"
+
+
+
+                for i in range(len(resultsPlaceId)):
+                    for j in range(len(characters)):
+                        resultsAvailabilityStart[i] = str(resultsAvailabilityStart[i]).replace(characters[j],"")
+                        resultsAvailabilityEnd[i] = str(resultsAvailabilityEnd[i]).replace(characters[j],"")
+                    if(((datetime.datetime.strptime(DateStart, '%Y-%m-%d'))>=(datetime.datetime.strptime(str(resultsAvailabilityStart[i]), '%Y-%m-%d')) or (datetime.datetime.strptime(DateStart, '%Y-%m-%d'))<=(datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d'))) and ((datetime.datetime.strptime(DateFinish, '%Y-%m-%d'))<=(datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d')))):
+                        print("\nPlaces: Place ID:" + str(resultsPlaceId[i]) + "\n")
+                        print("Description:" + str(resultsDescription[i]) + "\n")
+                        print("Country:" + str(resultsCountry[i]) + "\n")
+                        print("Price:" + str(resultsPrice[i]) + "\n")
+                        print("Address:" + str(resultsAddress[i]) + "\n")
+                        print("NameContact:" + str(resultsNameContact[i]) + "\n")
+                        print("PhoneContact:" + str(resultsPhoneContact[i]) + "\n")
+                        print("AvailabilityStart:" + str(resultsAvailabilityStart[i]) + "\n")
+                        print("AvailabilityEnd:" + str(resultsAvailabilityEnd[i]) + "\n")
+                    else:
+                        print("\n There is not availability for the dates selected, please try again \n")
+
+
+
+
+
+
+
     elif option == 4:
             count = ''
             print("\n**********************************************")
