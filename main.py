@@ -359,7 +359,15 @@ while start:
             cursor = connection.cursor()
             cursor.execute(
                 "SELECT UserID FROM User WHERE UserName = '" + email + "' and  UserType =  '1'")
-            resultsValidatedUser = cursor.fetchone()
+            resultsValidatedUser = cursor.fetchall()
+
+            characters = "(',)"
+
+            for i in range(len(resultsValidatedUser)):
+                for j in range(len(characters)):
+                    resultsValidatedUser[i] = str(resultsValidatedUser[i]).replace(characters[j], "")
+                resultsValidatedUser = str(resultsValidatedUser[i])
+
             cursor.close()
 
             if resultsValidatedUser != None:
@@ -368,6 +376,8 @@ while start:
                 DateStart = DateStart.upper()
                 DateFinish = input("Enter Date Finish with format:YYYY-MM-DD \n")
                 DateFinish = DateFinish.upper()
+                CountryBooking = input("Enter Country booking \n")
+                CountryBooking = CountryBooking.upper()
 
                 cursor = connection.cursor()
                 cursor.execute(
@@ -431,19 +441,38 @@ while start:
                     for j in range(len(characters)):
                         resultsAvailabilityStart[i] = str(resultsAvailabilityStart[i]).replace(characters[j],"")
                         resultsAvailabilityEnd[i] = str(resultsAvailabilityEnd[i]).replace(characters[j],"")
-                    if(((datetime.datetime.strptime(DateStart, '%Y-%m-%d'))>=(datetime.datetime.strptime(str(resultsAvailabilityStart[i]), '%Y-%m-%d')) or (datetime.datetime.strptime(DateStart, '%Y-%m-%d'))<=(datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d'))) and ((datetime.datetime.strptime(DateFinish, '%Y-%m-%d'))<=(datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d')))):
-                        print("\nPlaces: Place ID:" + str(resultsPlaceId[i]) + "\n")
-                        print("Description:" + str(resultsDescription[i]) + "\n")
-                        print("Country:" + str(resultsCountry[i]) + "\n")
-                        print("Price:" + str(resultsPrice[i]) + "\n")
-                        print("Address:" + str(resultsAddress[i]) + "\n")
-                        print("NameContact:" + str(resultsNameContact[i]) + "\n")
-                        print("PhoneContact:" + str(resultsPhoneContact[i]) + "\n")
-                        print("AvailabilityStart:" + str(resultsAvailabilityStart[i]) + "\n")
-                        print("AvailabilityEnd:" + str(resultsAvailabilityEnd[i]) + "\n")
+                        resultsCountry[i] = str(resultsCountry[i]).replace(characters[j],"")
+                    if(resultsCountry[i] == CountryBooking):
+                        if((datetime.datetime.strptime(DateStart, '%Y-%m-%d'))<(datetime.datetime.strptime(DateFinish, '%Y-%m-%d'))):
+                            if((datetime.datetime.strptime(DateStart, '%Y-%m-%d')>=datetime.datetime.strptime(str(resultsAvailabilityStart[i]), '%Y-%m-%d')) and (datetime.datetime.strptime(DateFinish, '%Y-%m-%d')>=datetime.datetime.strptime(str(resultsAvailabilityStart[i]), '%Y-%m-%d'))):
+                                if((datetime.datetime.strptime(DateStart, '%Y-%m-%d')<=datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d')) and (datetime.datetime.strptime(DateFinish, '%Y-%m-%d')<=datetime.datetime.strptime(str(resultsAvailabilityEnd[i]), '%Y-%m-%d'))):
+                                    print("\nPlaces: Place ID:" + str(resultsPlaceId[i]) + "\n")
+                                    print("Description:" + str(resultsDescription[i]) + "\n")
+                                    print("Country:" + str(resultsCountry[i]) + "\n")
+                                    print("Price:" + str(resultsPrice[i]) + "\n")
+                                    print("Address:" + str(resultsAddress[i]) + "\n")
+                                    print("NameContact:" + str(resultsNameContact[i]) + "\n")
+                                    print("PhoneContact:" + str(resultsPhoneContact[i]) + "\n")
+                                    print("AvailabilityStart:" + str(resultsAvailabilityStart[i]) + "\n")
+                                    print("AvailabilityEnd:" + str(resultsAvailabilityEnd[i]) + "\n")
                     else:
-                        print("\n There is not availability for the dates selected, please try again \n")
+                        print("\n There is not availability for the country selected, please try again \n")
 
+
+
+
+                selectedplaceID= input("Select ID place to booking): \n")
+                selectedplaceID = selectedplaceID.upper()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    "INSERT INTO Booking (BookingDateStart, BookingFinishDate, UserID, PlaceID ) "
+                    "values ('" + DateStart + "','" + DateFinish + "','" + resultsValidatedUser + "','" +
+                    selectedplaceID + "');")
+                cursor.execute("COMMIT;")
+                cursor.close()
+                # --------------------------------------------------------------------------------
+                print("\nThe booking was successfully created\n")
 
 
 
