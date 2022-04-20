@@ -6,6 +6,10 @@
 import csv
 import sqlite3
 import datetime
+#import ax as ax
+#import fig as fig
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 start=True
@@ -476,19 +480,74 @@ while start:
 
 
 
-
-
-
     elif option == 4:
             count = ''
             print("\n**********************************************")
             print("*******************REPORTS**********************")
             print("************************************************")
 
-            email = input("Enter your email: \n")
-            email = email.upper()
-            password = input("Enter your password: \n")
-            password = password.upper()
+            print("\n***************SELECT REPORT**************\n (1) BOOKING CUSTOMERS \n", "(2) TOTAL PRICE BOOKING\n")
+            optionReport = input("Select the Option:")
+            optionReport = int(optionReport)
+
+            if optionReport == 1:
+                print("\n**********************************************")
+                print("*************1. BOOKING CUSTOMERS***************")
+                print("************************************************")
+
+
+                conn = sqlite3.connect('Travel_Agency.db')
+                sql_query = pd.read_sql_query('''
+                                                select a.UserID, b.UserName, c.Country
+                                                FROM
+                                                Booking a, User b, Place c
+                                                where a.UserID = b.UserID
+                                                and a.PlaceID = c.PlaceID 
+                                               ''', conn)
+
+                fig, ax = plt.subplots()
+
+                # hide axes
+                fig.patch.set_visible(False)
+                ax.axis('off')
+                ax.axis('tight')
+
+                df = pd.DataFrame(sql_query, columns=['UserID', 'UserName', 'Country'])
+                ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                fig.tight_layout()
+                plt.show()
+                #print(df)
+                # define figure and axes
+
+                # create table
+                #table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                # display table
+
+                #plt.show()
+                connection.close()
+
+                #table_query= plt.table(cellText=df.values),
+                #rowLabels=df.index.tolist(),
+                #colLabels=df.columns.tolist(),
+                #cellLoc='left',
+                #rowLoc='left')
+
+                #plt.show()
+
+                #plt.plot([1, 2, 3, 4])
+                #plt.ylabel('y-axis')
+                #plt.xlabel('x-axis')
+                #plt.show()
+
+            if optionReport == 2:
+                    count = ''
+                    print("\n**********************************************")
+                    print("****************TOTAL PRICE BOOKING*************")
+                    print("************************************************")
+            elif optionReport == 3:
+                manageReport = False
 
 
     elif option == 5:
