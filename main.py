@@ -15,10 +15,10 @@ import matplotlib.pyplot as plt
 start=True
 while start:
     print("************************************************")
-    print("**************LOGIN MODULE**********************")
+    print("***********TRAVEL AGENCY SYSTEM*****************")
     print("************************************************\n")
-    print("\n***************ENTER INFORMATION**************\n (1) Create User \n", "(2) Manage Places\n",
-          "(3) Booking\n","(4) Reports \n", " (5) Quit Application\n")
+    print("\n***********SELECT MODULE++++++++**************\n (1) Create User \n", "(2) Manage Places\n",
+          "(3) Booking\n","(4) Reports \n", "(5) Quit Application\n")
 
     codes1 = []
     codes2 = []
@@ -48,11 +48,11 @@ while start:
             email = email.upper()
             password = input("Enter your password (Letters and Numbers): \n")
             password = password.upper()
-            firstName = input("Enter your First Name): \n")
+            firstName = input("Enter your First Name: \n")
             firstName = firstName.upper()
-            lastName = input("Enter your Last Name): \n")
+            lastName = input("Enter your Last Name: \n")
             lastName = lastName.upper()
-            phone = input("Enter your Phone Number): \n")
+            phone = input("Enter your Phone Number: \n")
             phone = phone.upper()
 
             # Qry User and Nro times to access
@@ -88,11 +88,11 @@ while start:
             email = email.upper()
             password = input("Enter your password (Letters and Numbers): \n")
             password= password.upper()
-            firstName = input("Enter your First Name): \n")
+            firstName = input("Enter your First Name: \n")
             firstName = firstName.upper()
-            lastName = input("Enter your Last Name): \n")
+            lastName = input("Enter your Last Name: \n")
             lastName = lastName.upper()
-            phone = input("Enter your Phone Number): \n")
+            phone = input("Enter your Phone Number: \n")
             phone = phone.upper()
 
             # Qry User and Nro times to access
@@ -119,7 +119,7 @@ while start:
             count = ''
             managePlaces = True
             print("\n**********************************************")
-            print("*************MANAGE PLACES**********************")
+            print("**********AUTHENTICATION MODULE******************")
             print("************************************************")
 
             email = input("Enter your email: \n")
@@ -137,9 +137,12 @@ while start:
 
             if resultsValidatedAdmin != None:
                 while(managePlaces):
-                    print("\n***************ADMIN OPTION**************\n (1) Create Places \n", "(2) View Places\n","(3) Update Places\n","(4) Delete Places\n")
+                    print("\n**********************************************")
+                    print("\n***************ADMIN PLACES*******************\n (1) Create Places \n", "(2) View Places\n","(3) Update Places\n","(4) Delete Places\n")
+                    print("\n**********************************************")
                     optionPlaces = input("Select the Option:")
                     optionPlaces = int(optionPlaces)
+
 
                     if optionPlaces == 1:
                         print("\n**********************************************")
@@ -148,15 +151,15 @@ while start:
 
                         descriptionPlace = input("Enter Description Place: \n")
                         descriptionPlace = descriptionPlace.upper()
-                        country = input("Enter Country): \n")
+                        country = input("Enter Country: \n")
                         country= country.upper()
-                        price = input("Enter Price): \n")
+                        price = input("Enter Price: \n")
                         price = price.upper()
-                        address = input("Enter Address): \n")
+                        address = input("Enter Address: \n")
                         address = address.upper()
-                        nameContact = input("Enter Name Contact): \n")
+                        nameContact = input("Enter Name Contact: \n")
                         nameContact = nameContact.upper()
-                        phoneContactPlace = input("Enter Phone Contact): \n")
+                        phoneContactPlace = input("Enter Phone Contact: \n")
                         phoneContactPlace = phoneContactPlace.upper()
                         availabilityStart = input("Enter Availability Start with format):YYYY-MM-DD \n") #CONFIRME VALIDATION
                         availabilityStart = availabilityStart.upper()
@@ -298,57 +301,11 @@ while start:
 
                     elif optionPlaces == 5:
                         managePlaces = False
-
-            #cursor = connection.cursor()
-            #cursor.execute("SELECT ACCESS_COUNT FROM TRAVEL_AGENCY WHERE LOGIN = '"+email+"' AND CRYPTOGRAPHIC_PASSWORD = '"+newpassword+"'")
-            #count = cursor.fetchone()
-            #access = type(int(count[0]))+ 1
-           # if(count != None):
-                #for i in range(len(count)):
-                    #access = count[i]
-                    #access = access + 1
-               # cursor.close()
-                # --------------------------------------------------------------------------------
-
-            # update times to access in database
-               # cursor = connection.cursor()
-                #cursor.execute(
-                 #   "UPDATE TB_USER SET ACCESS_COUNT = "+str(access)+" WHERE LOGIN = '"+email+"' AND CRYPTOGRAPHIC_PASSWORD = '"+newpassword+"';")
-                # cursor.execute("COMMIT;")
-                # cursor.close()
-            # Qry User and Nro times to access
-                #---------------------------------------------------------------------------------------------
-                # cursor = connection.cursor()
-                # cursor.execute(
-                  #  "SELECT LOGIN, ACCESS_COUNT FROM TB_USER WHERE LOGIN = '" + email + "' AND CRYPTOGRAPHIC_PASSWORD = '" + newpassword + "'")
-                # results1 = cursor.fetchall()
-                # cursor.close()
-
-            # Qry all Data to backup file
-                #-------------------------------------------------------------------------------------------------------------
-               # cursor = connection.cursor()
-                #cursor.execute(
-                 #   "SELECT * FROM TB_USER ")
-                #results2 = cursor.fetchall()
-                # cursor.close()
-
-                # for i in range(len(results1)):
-                  #  print("\nSuccessful Access, Your User and Login Number is:"+ str(results1[i])+"\n")
-                # --------------------------------------------------------------------------------
-                #connection.close()
-            # Write backup file
-                #file_backup = open('userdb-backup.csv', mode='w')
-
-                # Write file operation
-                #for i in range(len(results2)):
-                    #file_backup.write(str(results2[i])+"\n")
-
-                #file_backup.close()
-
             else:
                 print("\n The user or password is not correct try again, please \n")
 
     elif option == 3:
+            exit= False
             count = ''
             print("\n**********************************************")
             print("*******************BOOKING**********************")
@@ -366,15 +323,16 @@ while start:
             resultsValidatedUser = cursor.fetchall()
 
             characters = "(',)"
+            if len(resultsValidatedUser) != 0:
 
-            for i in range(len(resultsValidatedUser)):
-                for j in range(len(characters)):
-                    resultsValidatedUser[i] = str(resultsValidatedUser[i]).replace(characters[j], "")
-                resultsValidatedUser = str(resultsValidatedUser[i])
+                for i in range(len(resultsValidatedUser)):
+                    for j in range(len(characters)):
+                        resultsValidatedUser[i] = str(resultsValidatedUser[i]).replace(characters[j], "")
+                    resultsValidatedUser = str(resultsValidatedUser[i])
 
-            cursor.close()
+                cursor.close()
 
-            if resultsValidatedUser != None:
+
 
                 DateStart = input("Enter Date Start with format: YYYY-MM-DD \n")
                 DateStart = DateStart.upper()
@@ -459,25 +417,29 @@ while start:
                                     print("PhoneContact:" + str(resultsPhoneContact[i]) + "\n")
                                     print("AvailabilityStart:" + str(resultsAvailabilityStart[i]) + "\n")
                                     print("AvailabilityEnd:" + str(resultsAvailabilityEnd[i]) + "\n")
-                    else:
-                        print("\n There is not availability for the country selected, please try again \n")
+                                    exit = True
+                    #else:
+                     #   print("\n There is not availability for the country selected, please try again \n")
 
 
 
+                if (exit):
+                    selectedplaceID= input("Select ID place to booking: \n")
+                    selectedplaceID = selectedplaceID.upper()
 
-                selectedplaceID= input("Select ID place to booking): \n")
-                selectedplaceID = selectedplaceID.upper()
-
-                cursor = connection.cursor()
-                cursor.execute(
-                    "INSERT INTO Booking (BookingDateStart, BookingFinishDate, UserID, PlaceID ) "
-                    "values ('" + DateStart + "','" + DateFinish + "','" + resultsValidatedUser + "','" +
-                    selectedplaceID + "');")
-                cursor.execute("COMMIT;")
-                cursor.close()
-                # --------------------------------------------------------------------------------
-                print("\nThe booking was successfully created\n")
-
+                    cursor = connection.cursor()
+                    cursor.execute(
+                        "INSERT INTO Booking (BookingDateStart, BookingFinishDate, UserID, PlaceID ) "
+                        "values ('" + DateStart + "','" + DateFinish + "','" + resultsValidatedUser + "','" +
+                        selectedplaceID + "');")
+                    cursor.execute("COMMIT;")
+                    cursor.close()
+                    # --------------------------------------------------------------------------------
+                    print("\nThe booking was successfully created\n")
+                else:
+                    print("\n There is not availability for the country selected, please try again \n")
+            else:
+                print("\n User Incorrect, please try again \n")
 
 
     elif option == 4:
@@ -485,70 +447,169 @@ while start:
             print("\n**********************************************")
             print("*******************REPORTS**********************")
             print("************************************************")
+            email = input("Enter your email: \n")
+            email = email.upper()
+            password = input("Enter your password: \n")
+            password = password.upper()
 
-            print("\n***************SELECT REPORT**************\n (1) BOOKING CUSTOMERS \n", "(2) TOTAL PRICE BOOKING\n")
-            optionReport = input("Select the Option:")
-            optionReport = int(optionReport)
+            connection = sqlite3.connect("Travel_Agency.db")
+            # --------------------------------------------------------------------------------
+            cursor = connection.cursor()
+            cursor.execute(
+                "SELECT UserName FROM User WHERE UserName = '" + email + "' and  UserType =  '0'")
+            resultsValidatedAdmin = cursor.fetchone()
+            cursor.close()
+            manageReport = True
+            if resultsValidatedAdmin != None:
+                while(manageReport):
 
-            if optionReport == 1:
-                print("\n**********************************************")
-                print("*************1. BOOKING CUSTOMERS***************")
-                print("************************************************")
+                    print("\n***************SELECT REPORT**************\n (1) BooKings  By Country \n", "(2) BooKings  By User\n", "(3) Average Price by booking Type\n")
+                    optionReport = input("Select the Option:")
+                    optionReport = int(optionReport)
+
+                    if optionReport == 1:
+                        print("\n**********************************************")
+                        print("************1. BooKings  By Country*************")
+                        print("************************************************")
 
 
-                conn = sqlite3.connect('Travel_Agency.db')
-                sql_query = pd.read_sql_query('''
-                                                select a.UserID, b.UserName, c.Country
-                                                FROM
-                                                Booking a, User b, Place c
-                                                where a.UserID = b.UserID
-                                                and a.PlaceID = c.PlaceID 
-                                               ''', conn)
+                        conn = sqlite3.connect('Travel_Agency.db')
+                        sql_query = pd.read_sql_query('''
+                                                    
+                                                        
+                                                        SELECT c.Country, COUNT(b.UserID)
+                                                        FROM 
+                                                        Booking a, User b, Place c 
+                                                        where a.UserID = b.UserID
+                                                        and a.PlaceID = c.PlaceID 
+                                                        GROUP BY c.Country
+                                                       ''', conn)
 
-                fig, ax = plt.subplots()
+                        fig, ax = plt.subplots()
 
-                # hide axes
-                fig.patch.set_visible(False)
-                ax.axis('off')
-                ax.axis('tight')
+                        # hide axes
+                        fig.patch.set_visible(False)
+                        ax.axis('off')
+                        ax.axis('tight')
 
-                df = pd.DataFrame(sql_query, columns=['UserID', 'UserName', 'Country'])
-                ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+                        df = pd.DataFrame(sql_query, columns=['Country', 'COUNT(b.UserID)'])
+                        ax.table(cellText=df.values, colLabels=df.columns, loc='center')
 
-                fig.tight_layout()
-                plt.show()
-                #print(df)
-                # define figure and axes
+                        fig.tight_layout()
+                        plt.show()
+                        #print(df)
+                        # define figure and axes
 
-                # create table
-                #table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+                        # create table
+                        #table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
 
-                # display table
+                        # display table
 
-                #plt.show()
-                connection.close()
+                        #plt.show()
+                        connection.close()
 
-                #table_query= plt.table(cellText=df.values),
-                #rowLabels=df.index.tolist(),
-                #colLabels=df.columns.tolist(),
-                #cellLoc='left',
-                #rowLoc='left')
+                        #table_query= plt.table(cellText=df.values),
+                        #rowLabels=df.index.tolist(),
+                        #colLabels=df.columns.tolist(),
+                        #cellLoc='left',
+                        #rowLoc='left')
 
-                #plt.show()
+                        #plt.show()
 
-                #plt.plot([1, 2, 3, 4])
-                #plt.ylabel('y-axis')
-                #plt.xlabel('x-axis')
-                #plt.show()
+                        #plt.plot([1, 2, 3, 4])
+                        #plt.ylabel('y-axis')
+                        #plt.xlabel('x-axis')
+                        #plt.show()
 
-            if optionReport == 2:
-                    count = ''
-                    print("\n**********************************************")
-                    print("****************TOTAL PRICE BOOKING*************")
-                    print("************************************************")
-            elif optionReport == 3:
-                manageReport = False
+                    if optionReport == 2:
+                            count = ''
+                            print("\n**********************************************")
+                            print("***+++++++**2.  BooKings  By User***************")
+                            print("************************************************")
 
+                            conn = sqlite3.connect('Travel_Agency.db')
+                            sql_query = pd.read_sql_query('''
+        
+                                                            select  b.UserName, COUNT(b.UserName) 
+                                                            FROM
+                                                            Booking a, User b, Place c 
+                                                            where a.UserID = b.UserID
+                                                            and a.PlaceID = c.PlaceID 
+                                                            group by b.UserName
+                                                            order by b.UserName
+                                                           ''', conn)
+
+                            fig, ax = plt.subplots()
+
+                            # hide axes
+                            fig.patch.set_visible(False)
+                            ax.axis('off')
+                            ax.axis('tight')
+
+                            df = pd.DataFrame(sql_query, columns=['UserName', 'COUNT(b.UserName)'])
+                            ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                            fig.tight_layout()
+                            plt.show()
+                            # print(df)
+                            # define figure and axes
+
+                            # create table
+                            # table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                            # display table
+
+                            # plt.show()
+                            connection.close()
+
+                    if optionReport == 3:
+                            count = ''
+                            print("\n**********************************************")
+                            print("*****3. Average Price by booking Type***********")
+                            print("************************************************")
+
+                            conn = sqlite3.connect('Travel_Agency.db')
+                            sql_query = pd.read_sql_query('''
+        
+                                                            
+                                                            
+                                                            SELECT     c.Description, round(AVG(c.Price))
+                                                            FROM       
+                                                            Booking a, User b, Place c 
+                                                            where a.UserID = b.UserID
+                                                            and a.PlaceID = c.PlaceID 
+                                                            GROUP BY   c.Description;
+                                                           ''', conn)
+
+                            fig, ax = plt.subplots()
+
+                            # hide axes
+                            fig.patch.set_visible(False)
+                            ax.axis('off')
+                            ax.axis('tight')
+
+                            df = pd.DataFrame(sql_query, columns=['Description', 'round(AVG(c.Price))'])
+                            ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                            fig.tight_layout()
+                            plt.show()
+                            # print(df)
+                            # define figure and axes
+
+                            # create table
+                            # table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                            # display table
+
+                            # plt.show()
+                            connection.close()
+
+
+
+                    elif optionReport == 4:
+                        manageReport = False
+            else:
+                print("\n The user or password is not correct try again, please \n")
 
     elif option == 5:
         start = False
